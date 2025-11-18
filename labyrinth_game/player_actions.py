@@ -115,6 +115,9 @@ def try_activate_action(action_name):
         return
 
     action_name = action_name.split()
+
+    if action_name[0] in DIRECTIONS:
+        return available_actions['go'](action_name[0])
     
     if action_name[0] not in list(available_actions.keys()):
         print("Такой команды не существует")
