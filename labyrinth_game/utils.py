@@ -78,7 +78,10 @@ def solve_puzzle(game_state):
         print(f"Вы нашли 10 монет. Текущий счет: {game_state['coins']} монет")
         current_room_data['puzzle'] = None
     else:
-        print("Неверно. Попробуйте снова")
+        if game_state['current_room'] == 'trap_room':
+            trigger_trap(game_state)
+        else:
+            print("Неверно. Попробуйте снова")
 
 def attempt_open_treasure(game_state):
     if 'treasure_key' in game_state['player_inventory']:
