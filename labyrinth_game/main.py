@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from .utils import describe_current_room
+from .utils import random_event
 
 from .player_actions import show_available_actions
 from .player_actions import get_input
@@ -28,6 +29,7 @@ def main():
            print('')
            describe_current_room(game_state)
            game_state['steps_taken'] += 1
+           random_event(game_state)
 
         if command == 'quit' or game_state['game_over']:
           print("\nВыход из игры.")

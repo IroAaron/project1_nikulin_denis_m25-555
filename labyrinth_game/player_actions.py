@@ -27,7 +27,7 @@ def action_move_player(direction):
     else:
         print("Такого направления не существует")
     
-def try_take_item(item):
+def action_try_take_item(item):
     available_items = ROOMS[global_game_state['current_room']]['items']
 
     if len(available_items) == 0:
