@@ -1,6 +1,7 @@
 #labyrinth_game/constants.py
 ROOMS = {
     'entrance': {
+        'is_open' : True,
         'description': 'Вы в темном входе лабиринта. Стены покрыты мхом. На полу лежит старый факел.',
         'exits': {'north': 'hall', 'east': 'trap_room'},
         'items': ['torch'],
@@ -8,6 +9,7 @@ ROOMS = {
         'coins' : 1
     },
     'hall': {
+        'is_open' : True,
         'description': 'Большой зал с эхом. По центру стоит пьедестал с запечатанным сундуком.',
         'exits': {'south': 'entrance', 'west': 'library', 'north': 'treasure_room'},
         'items': [],
@@ -15,6 +17,7 @@ ROOMS = {
         'coins' : 2
     },
     'trap_room': {
+        'is_open' : True,
         'description': 'Комната с хитрой плиточной поломкой. На стене видна надпись: "Осторожно — ловушка".',
         'exits': {'west': 'entrance'},
         'items': ['rusty_key'],
@@ -22,6 +25,7 @@ ROOMS = {
         'coins' : 3
     },
     'library': {
+        'is_open' : True,
         'description': 'Пыльная библиотека. На полках старые свитки. Где-то здесь может быть ключ от сокровищницы.',
         'exits': {'east': 'hall', 'north': 'armory', 'west': 'secret_passage'},
         'items': ['ancient_book', 'treasure_key'],
@@ -29,6 +33,7 @@ ROOMS = {
         'coins' : 4
     },
     'armory': {
+        'is_open' : True,
         'description': 'Старая оружейная комната. На стене висит меч, рядом — небольшая бронзовая шкатулка.',
         'exits': {'south': 'library', 'north': 'garden'},
         'items': ['sword', 'bronze_box'],
@@ -36,6 +41,7 @@ ROOMS = {
         'coins' : 5
     },
     'treasure_room': {
+        'is_open' : False,
         'description': 'Комната, на столе большой сундук. Дверь заперта — нужен особый ключ.',
         'exits': {'south': 'hall',},
         'items': ['treasure_chest'],
@@ -43,6 +49,7 @@ ROOMS = {
         'coins' : 6  
     },
     'secret_passage': {
+        'is_open' : True,
         'description': 'Узкий тайный проход между стенами. В воздухе витает запах старой бумаги. В конце — деревянная дверь с замочной скважиной.',
         'exits': {'east': 'library', 'west': 'hidden_chamber'},
         'items': ['dust_covered_note'],
@@ -50,6 +57,7 @@ ROOMS = {
         'coins' : 7
     },
     'hidden_chamber': {
+        'is_open' : True,
         'description': 'Скрытая камера с алтарём в центре. На алтаре лежит кристалл, излучающий тусклый свет.',
         'exits': {'east': 'secret_passage'},
         'items': ['glowing_crystal', 'ancient_seal'],
@@ -57,6 +65,7 @@ ROOMS = {
         'coins' : 8
     },
     'garden': {
+        'is_open' : True,
         'description': 'Заброшенный сад с высохшими растениями. В центре — каменный колодец с ржавой цепью.',
         'exits': {'south': 'armory', 'east': 'observatory'},
         'items': ['withered_flower', 'old_bucket'],
@@ -64,6 +73,7 @@ ROOMS = {
         'coins' : 9
     },
     'observatory': {
+        'is_open' : True,
         'description': 'Обсерватория с огромным телескопом. На стенах — карты звёздного неба. В углу стоит запертый ящик.',
         'exits': {'west': 'garden'},
         'items': ['star_chart', 'telescope_lens'],

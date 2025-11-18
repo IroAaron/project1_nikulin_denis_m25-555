@@ -20,7 +20,15 @@ def action_move_player(direction):
     available_directions = ROOMS[global_game_state['current_room']]['exits']
     if direction in DIRECTIONS:
         if direction in available_directions:
-            global_game_state['current_room'] = ROOMS[global_game_state['current_room']]['exits'][direction]
+            next_room = ROOMS[global_game_state['current_room']]['exits'][direction]
+            if not ROOMS[next_room]['is_open']:
+                if 'rusty_key' in global_game_state['player_inventory']:
+                    ROOMS[next_room]['is_open'] = True
+                    print(f"Вы использовали rusty_key и успешно открыли {next_room}")
+                else:
+                    print(f"Дверь в {next_room} заперта. Нужен ключ, чтобы войти")
+                    return
+            global_game_state['current_room'] = next_room
             return 'new_room'
         else:
             print("Нельзя пойти в этом направлении")
@@ -43,52 +51,52 @@ def action_try_take_item(item):
         return
 
     if item in available_items:
-        take_item(item)
+        action_take_item(item)
         available_items.remove(item)
         change_room_desc_after_item_taken(global_game_state['current_room'], item, global_game_state)
     else:
         print("Этого предмета в комнате нет")
 
-def take_item(item):
+def action_take_item(item):
     print(f"Вы подняли предмет {item}")
     global_game_state['player_inventory'].append(item)
 
-def use_item(item):
+def action_use_item(item):
     match item:
         case 'torch':
             print("Стало светлее")
         case 'sword':
             print("Вы чувствуете себя увереннее")
-        case 'bronze box':
+        case 'bronze_box':
             if('rusty_key' in global_game_state['player_inventory']):
                 print("Вы открываете шкатулку и там... Пусто")
             else:
                 print("Вы нашли ржавый ключ!")
-                take_item('rusty_key')
+                action_take_item('rusty_key')
         case _:
             print("Без понятия, что с этим делать")
 
-def describe_room(argue):
+def action_describe_room(argue):
     describe_current_room(global_game_state)
 
-def try_solve_puzzle(argue):
+def action_try_solve_puzzle(argue):
     if global_game_state['current_room'] == 'treasure_room':
         attempt_open_treasure(global_game_state)
         return
     
     solve_puzzle(global_game_state)
 
-def action_quit_game(argue):
+def action_action_quit_game(argue):
     return 'quit'
 
 available_actions = {
     'go' : action_move_player,
-    'look' : describe_room,
-    'take' : try_take_item,
-    'use' : use_item,
+    'look' : action_describe_room,
+    'take' : action_try_take_item,
+    'use' : action_use_item,
     'inventory' : action_show_inventory,
-    'solve' : try_solve_puzzle,
-    'quit' : action_quit_game
+    'solve' : action_try_solve_puzzle,
+    'quit' : action_action_quit_game
 }
 
 def get_input(game_state, prompt="> "):
@@ -102,6 +110,10 @@ def get_input(game_state, prompt="> "):
         return "quit"
 
 def try_activate_action(action_name):
+    if action_name == '':
+        print("Вы не ввели команду")
+        return
+
     action_name = action_name.split()
     
     if action_name[0] not in list(available_actions.keys()):

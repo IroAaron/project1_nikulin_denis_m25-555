@@ -4,27 +4,30 @@ from .constants import BIG_RANDOM_NUMS
 import math
 
 def pseudo_random(seed, modulo):
-    final_num = math.sin(seed)
-    for big_num in BIG_RANDOM_NUMS:
-        final_num *= big_num
-    
-    final_num = math.floor((final_num - math.floor(final_num)) * modulo)
+    final_num = math.sin(seed * BIG_RANDOM_NUMS[0]) * BIG_RANDOM_NUMS[1]
+    final_num = round((final_num - math.floor(final_num)) * modulo)
+    return final_num
 
 def random_event(game_state):
     seed = game_state['steps_taken']
-    event_chance = pseudo_random(seed, 10)
+    event_chance = pseudo_random(seed, 10)  
     if event_chance > 0: return
 
     event_type = pseudo_random(seed, 2)
     match event_type:
         case 0:
-            add_coins(ROOMS[game_state['current_room']]['coins'])
+            add_coins(game_state, ROOMS[game_state['current_room']]['coins'])
         case 1:
             print("Вы слышите шорох")
-            if 'sword' in game_state['inventory']:
-                print("Кажется, вы отпугнули нечно, скрывающееся во тьме")
+            if 'sword' in game_state['player_inventory']:
+                print("Кажется, вы отпугнули нечно, скрывающееся во тьме, своим мечом")
+            else:
+                attack_chance = pseudo_random(seed, 10)
+                if attack_chance < 3:
+                    print("Чудище напало на вас. Вам не было чем отбиться")
+                    lose_message(game_state)
         case 2:
-            if game_state['current_room'] == 'trap_room' and 'torch' not in game_state['inventory']:
+            if game_state['current_room'] == 'trap_room' and 'torch' not in game_state['player_inventory']:
                 print("Вы не заметили ловушку!")
                 trigger_trap(game_state)
 
@@ -106,13 +109,15 @@ def trigger_trap(game_state):
     else:
         damage_chance = pseudo_random(seed, 9)
         if damage_chance < 3:
+            print("К сожалению, вы не уцелели после ловушки...")
             lose_message(game_state)
         else:
             print("На ваше счастье вы уцелели")
 
 def add_coins(game_state, ammount):
-    print("Вы нашли монеты")
+    print(f"Удача! Вы нашли {ammount} монет")
     game_state['coins'] += ammount
+    print(f"Текущее количество монет: {game_state['coins']}")
 
 def win_message(game_state):
     current_room_data = ROOMS[game_state['current_room']]
@@ -122,5 +127,5 @@ def win_message(game_state):
     game_state['game_over'] = True
 
 def lose_message(game_state):
-    print("К сожалению, вы не уцелели после ловушки...")
+    print("Вы потерпели поражение. Повезет в следующий раз!")
     game_state['game_over'] = True
