@@ -26,7 +26,7 @@ def action_move_player(direction):
     else:
         print("Такого направления не существует")
     
-def take_item(item):
+def try_take_item(item):
     available_items = ROOMS[global_game_state['current_room']]['items']
 
     if len(available_items) == 0:
@@ -42,11 +42,29 @@ def take_item(item):
         return
 
     if item in available_items:
-        print(f"Вы подняли предмет {item}")
-        global_game_state['player_inventory'].append(item)
+        take_item(item)
         available_items.remove(item)
     else:
         print("Этого предмета в комнате нет")
+
+def take_item(item):
+    print(f"Вы подняли предмет {item}")
+    global_game_state['player_inventory'].append(item)
+
+def use_item(item):
+    match item:
+        case 'torch':
+            print("Стало светлее")
+        case 'sword':
+            print("Вы чувствуете себя увереннее")
+        case 'bronze box':
+            if('rusty_key' in global_game_state['player_inventory']):
+                print("Вы открываете шкатулку и там... Пусто")
+            else:
+                print("Вы нашли ржавый ключ!")
+                take_item('rusty_key')
+        case _:
+            print("Без понятия, что с этим делать")
 
 def describe_room(argue):
     describe_current_room(global_game_state)
@@ -62,10 +80,11 @@ def action_quit_game(argue):
     return 'quit'
 
 available_actions = {
-    'describe_room' : describe_room,
-    'show_inventory' : action_show_inventory,
-    'move' : action_move_player,
-    'take' : take_item,
+    'go' : action_move_player,
+    'look' : describe_room,
+    'take' : try_take_item,
+    'use' : use_item,
+    'inventory' : action_show_inventory,
     'solve' : try_solve_puzzle,
     'quit' : action_quit_game
 }
