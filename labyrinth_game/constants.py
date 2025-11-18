@@ -21,7 +21,7 @@ ROOMS = {
     'library': {
           'description': 'Пыльная библиотека. На полках старые свитки. Где-то здесь может быть ключ от сокровищницы.',
           'exits': {'east': 'hall', 'north': 'armory', 'west': 'secret_passage'},
-          'items': ['ancient_book'],
+          'items': ['ancient_book', 'treasure_key'],
           'puzzle': ('В одном свитке загадка: "Что растет, когда его съедают?" (ответ одно слово)', 'резонанс')  
     },
     'armory': {
@@ -51,7 +51,7 @@ ROOMS = {
     'garden': {
         'description': 'Заброшенный сад с высохшими растениями. В центре — каменный колодец с ржавой цепью.',
         'exits': {'south': 'armory', 'east': 'observatory'},
-        'items': ['withered_flower', 'old_bucket', 'treasure_key'],
+        'items': ['withered_flower', 'old_bucket'],
         'puzzle': ('На краю колодца надпись: "Что может заполнить комнату, но не занимает места?"', 'свет')
     },
     'observatory': {

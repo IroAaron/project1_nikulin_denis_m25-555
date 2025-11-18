@@ -9,6 +9,33 @@ def describe_current_room(game_state):
     print(current_room_data['exits'])
     if current_room_data['puzzle'] is not None: print("Кажется, здесь есть загадка")
 
+def change_room_desc_after_item_taken(room, item, game_state):
+    match room:
+        case 'entrance':
+            if item == 'torch':
+                ROOMS[room]['description'] = 'Вы в темном входе лабиринта. Стены покрыты мхом.'
+        case 'library':
+             if item == 'treasure_key':
+                ROOMS[room]['description'] = 'Пыльная библиотека. На полках старые свитки.'
+        case 'armory':
+            if item == 'sword':
+                if 'bronze_box' in ROOMS[room]['items']:
+                    ROOMS[room]['description'] = 'Старая оружейная комната. Рядом с местом, где висел меч — небольшая бронзовая шкатулка.'
+                else:
+                    ROOMS[room]['description'] = 'Старая оружейная комната.'
+            if item == 'bronze_box':
+                if 'sword' in ROOMS[room]['items']:
+                    ROOMS[room]['description'] = 'Старая оружейная комната. На стене висит меч.'
+                else:
+                    ROOMS[room]['description'] = 'Старая оружейная комната.'
+        case 'hidden_chamber':
+            if item == 'glowing_crystal':
+                ROOMS[room]['description'] = 'Скрытая камера с алтарём в центре.'
+
+
+
+          
+
 def solve_puzzle(game_state):
     current_room_data = ROOMS[game_state['current_room']]
     if current_room_data['puzzle'] is None:

@@ -4,6 +4,7 @@ from .constants import DIRECTIONS
 from .utils import describe_current_room
 from .utils import solve_puzzle
 from .utils import attempt_open_treasure
+from .utils import change_room_desc_after_item_taken
 
 global_game_state = {}
 
@@ -44,6 +45,7 @@ def try_take_item(item):
     if item in available_items:
         take_item(item)
         available_items.remove(item)
+        change_room_desc_after_item_taken(global_game_state['current_room'], item, global_game_state)
     else:
         print("Этого предмета в комнате нет")
 
