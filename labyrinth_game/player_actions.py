@@ -1,11 +1,11 @@
-from labyrinth_game.constants import ROOMS, DIRECTIONS, COMMANDS
 from labyrinth_game import utils
+from labyrinth_game.constants import COMMANDS, DIRECTIONS, HELP_SPACES, ROOMS
 
 global_game_state = {}
 
 def action_show_help(argue):
     for command in list(COMMANDS.keys()):
-        print(''.ljust(16, ' '), end='')
+        print(''.ljust(HELP_SPACES, ' '), end='')
         print(f"'{command}' - {COMMANDS[command]}")
 
 def action_show_inventory(argue):

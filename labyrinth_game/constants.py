@@ -1,5 +1,12 @@
 #labyrinth_game/constants.py
 
+HELP_SPACES = 16
+MAX_EVENT_CHANCE_NUM = 10
+MAX_DAMAGE_CHANCE = 3
+BIG_RANDOM_NUMS = [12.9898, 43758.5453]
+
+DIRECTIONS = ['north', 'south', 'east', 'west']
+
 ROOMS = {
     'entrance': {
         'is_open' : True,
@@ -115,10 +122,6 @@ ROOMS = {
         'coins' : 1
     }
 }
-
-DIRECTIONS = ['north', 'south', 'east', 'west']
-
-BIG_RANDOM_NUMS = [12.9898, 43758.5453]
 
 COMMANDS = {
     'help': 'показать список команд и их описание',

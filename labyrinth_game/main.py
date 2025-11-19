@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-from labyrinth_game import utils
-from labyrinth_game import player_actions
+from labyrinth_game import player_actions, utils
 
 game_state = {
     'coins': 0, # Деньги игрока

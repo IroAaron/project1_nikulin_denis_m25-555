@@ -1,6 +1,12 @@
 import math
 
-from labyrinth_game.constants import BIG_RANDOM_NUMS, ROOMS
+from labyrinth_game.constants import (
+    BIG_RANDOM_NUMS,
+    MAX_DAMAGE_CHANCE,
+    MAX_EVENT_CHANCE_NUM,
+    ROOMS,
+)
+
 
 def pseudo_random(seed, modulo):
     final_num = math.sin(seed * BIG_RANDOM_NUMS[0]) * BIG_RANDOM_NUMS[1]
@@ -9,7 +15,7 @@ def pseudo_random(seed, modulo):
 
 def random_event(game_state):
     seed = game_state['steps_taken']
-    event_chance = pseudo_random(seed, 10)  
+    event_chance = pseudo_random(seed, MAX_EVENT_CHANCE_NUM)  
     if event_chance > 0: 
         return
 
@@ -24,8 +30,8 @@ def random_event(game_state):
             if 'sword' in game_state['player_inventory']:
                 print("Кажется, вы отпугнули нечно, скрывающееся во тьме, своим мечом")
             else:
-                attack_chance = pseudo_random(seed, 10)
-                if attack_chance < 3:
+                attack_chance = pseudo_random(seed, MAX_EVENT_CHANCE_NUM)
+                if attack_chance < MAX_DAMAGE_CHANCE:
                     print("Чудище напало на вас. Вам не было чем отбиться")
                     lose_message(game_state)
         case 2:
@@ -125,8 +131,8 @@ def trigger_trap(game_state):
         player_inventory.remove(removed_item)
         print(f"Попав в ловушку, вы потеряли предмет {removed_item}")
     else:
-        damage_chance = pseudo_random(seed, 9)
-        if damage_chance < 3:
+        damage_chance = pseudo_random(seed, MAX_EVENT_CHANCE_NUM)
+        if damage_chance < MAX_DAMAGE_CHANCE:
             print("К сожалению, вы не уцелели после ловушки...")
             lose_message(game_state)
         else:

@@ -15,8 +15,3 @@ package-install:
 
 lint:
 	poetry run ruff check .
-
-clean:
-	rm -rf dist
-	rm -rf .mypy_cache
-	rm -rf __pycache__

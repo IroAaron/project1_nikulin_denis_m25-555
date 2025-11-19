@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "project1-nikulin-denis-m25-555"
 version = "0.1.0"
-description = ""
+description = "Demo treasure labyrinth game. To start - print make project"
 authors = ["Denis"]
 readme = "README.md"
 packages = [ { include = "labyrinth_game" } ]
