@@ -4,7 +4,6 @@ from .utils import describe_current_room
 from .utils import random_event
 
 from .player_actions import show_available_actions
-from .player_actions import action_show_help
 from .player_actions import get_input
 
 game_state = {
@@ -16,7 +15,7 @@ game_state = {
   }
 
 def main():
-    print("Добро пожаловать в Лабиринт сокровищ!\n")
+    print("Добро пожаловать в Лабиринт сокровищ!\n")  
     describe_current_room(game_state)
     
     while(True):
@@ -24,14 +23,14 @@ def main():
         print("Выберите любое действие из доступных:")
         show_available_actions()
         player_action = input('Ваше действие: ')
+        print('')
         command = get_input(game_state, player_action)
 
         if command == 'new_room':
-           print('')
            describe_current_room(game_state)
            game_state['steps_taken'] += 1
            random_event(game_state)
 
         if command == 'quit' or game_state['game_over']:
-          print("\nВыход из игры.")
+          print("Выход из игры.")
           break

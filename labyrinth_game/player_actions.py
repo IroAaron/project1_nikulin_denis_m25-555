@@ -10,10 +10,9 @@ from .utils import change_room_desc_after_item_taken
 global_game_state = {}
 
 def action_show_help(argue):
-    print('')
     for command in list(COMMANDS.keys()):
         print(''.ljust(16, ' '), end='')
-        print(f"Команда '{command}' - {COMMANDS[command]}")
+        print(f"'{command}' - {COMMANDS[command]}")
 
 def action_show_inventory(argue):
     inventory = global_game_state['player_inventory']
@@ -33,7 +32,7 @@ def action_move_player(direction):
                     ROOMS[next_room]['is_open'] = True
                     print(f"Вы использовали rusty_key и успешно открыли {next_room}")
                 else:
-                    print(f"Дверь в {next_room} заперта. Нужен ключ, чтобы войти")
+                    print("Кажется, дверь в комнату заперта. Нужен ключ, чтобы войти")
                     return
             global_game_state['current_room'] = next_room
             return 'new_room'

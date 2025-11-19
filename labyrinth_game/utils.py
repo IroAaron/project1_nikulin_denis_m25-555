@@ -16,7 +16,9 @@ def random_event(game_state):
     event_type = pseudo_random(seed, 2)
     match event_type:
         case 0:
-            add_coins(game_state, ROOMS[game_state['current_room']]['coins'])
+            coins = ROOMS[game_state['current_room']]['coins']
+            print(f"Удача! Вы нашли {coins} монет")
+            add_coins(game_state, coins)
         case 1:
             print("Вы слышите шорох")
             if 'sword' in game_state['player_inventory']:
@@ -34,11 +36,16 @@ def random_event(game_state):
 
 def describe_current_room(game_state):
     current_room_data = ROOMS[game_state['current_room']]
-    print('')
     print(f"== {game_state['current_room'].upper()} ==") 
     print(f"{current_room_data['description']}")
-    if len(current_room_data['items']) > 0:  print(f"Заметные предметы: {current_room_data['items']}")
-    print(current_room_data['exits'])
+    if len(current_room_data['items']) > 0:
+        print("Заметные предметы: ", end='')
+        for i in range(0, len(current_room_data['items'])):
+            print(f"{current_room_data['items'][i]}", end='')
+            if i < len(current_room_data['items']) - 1:
+                print(", ", end='')
+
+        print('')
     if current_room_data['puzzle'] is not None: print("Кажется, здесь есть загадка")
 
 def change_room_desc_after_item_taken(room, item, game_state):
@@ -69,13 +76,13 @@ def solve_puzzle(game_state):
     if current_room_data['puzzle'] is None:
         print("Загадок здесь нет.")
         return
-    print(current_room_data['puzzle'][0])
+    print(current_room_data['puzzle']['text'])
     answer = input("Ваш ответ: ")
 
-    if answer == current_room_data['puzzle'][1]:
+    print('')
+    if answer in current_room_data['puzzle']['answers']:
         print("Загадка решена!")
-        add_coins(game_state, 10)
-        print(f"Вы нашли 10 монет. Текущий счет: {game_state['coins']} монет")
+        try_add_awards(game_state)
         current_room_data['puzzle'] = None
     else:
         if game_state['current_room'] == 'trap_room':
@@ -118,9 +125,31 @@ def trigger_trap(game_state):
             print("На ваше счастье вы уцелели")
 
 def add_coins(game_state, ammount):
-    print(f"Удача! Вы нашли {ammount} монет")
     game_state['coins'] += ammount
     print(f"Текущее количество монет: {game_state['coins']}")
+
+def try_add_awards(game_state):
+    current_room_data = ROOMS[game_state['current_room']]
+    awards = list(current_room_data['puzzle']['awards'].keys())
+        
+    if len(awards) > 0:
+        for award in awards:
+            match award:
+                case 'coins':
+                    coins = current_room_data['puzzle']['awards']['coins']
+                    print(f"Вы нашли {coins} монет. Текущий счет: {game_state['coins']} монет")
+                    add_coins(game_state, coins)
+                case 'items':
+                    items = current_room_data['puzzle']['awards']['items']
+                    print("Вы нашли: ", end='')
+                    for i in range(0, len(items)):
+                        print(items[i], end='')
+                        if i < len(items) - 1:
+                            print(', ', end='')
+                case _:
+                    print('ОШИБКА НЕ ПОНЯТНАЯ НАГРАДА')
+        
+    print('')
 
 def win_message(game_state):
     current_room_data = ROOMS[game_state['current_room']]
