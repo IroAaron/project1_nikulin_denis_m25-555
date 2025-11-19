@@ -4,6 +4,7 @@ from .utils import describe_current_room
 from .utils import random_event
 
 from .player_actions import show_available_actions
+from .player_actions import action_show_help
 from .player_actions import get_input
 
 game_state = {

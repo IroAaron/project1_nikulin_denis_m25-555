@@ -1,5 +1,6 @@
 from .constants import ROOMS
 from .constants import DIRECTIONS
+from .constants import COMMANDS
 
 from .utils import describe_current_room
 from .utils import solve_puzzle
@@ -7,6 +8,12 @@ from .utils import attempt_open_treasure
 from .utils import change_room_desc_after_item_taken
 
 global_game_state = {}
+
+def action_show_help(argue):
+    print('')
+    for command in list(COMMANDS.keys()):
+        print(''.ljust(16, ' '), end='')
+        print(f"Команда '{command}' - {COMMANDS[command]}")
 
 def action_show_inventory(argue):
     inventory = global_game_state['player_inventory']
@@ -90,6 +97,7 @@ def action_action_quit_game(argue):
     return 'quit'
 
 available_actions = {
+    'help' : action_show_help,
     'go' : action_move_player,
     'look' : action_describe_room,
     'take' : action_try_take_item,
