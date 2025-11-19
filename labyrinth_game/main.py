@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 
-from .utils import describe_current_room
-from .utils import random_event
-
-from .player_actions import show_available_actions
-from .player_actions import get_input
+from labyrinth_game import utils
+from labyrinth_game import player_actions
 
 game_state = {
     'coins': 0, # Деньги игрока
@@ -16,20 +13,20 @@ game_state = {
 
 def main():
     print("Добро пожаловать в Лабиринт сокровищ!\n")  
-    describe_current_room(game_state)
+    utils.describe_current_room(game_state)
     
     while(True):
         print('')
         print("Выберите любое действие из доступных:")
-        show_available_actions()
+        player_actions.show_available_actions()
         player_action = input('Ваше действие: ')
         print('')
-        command = get_input(game_state, player_action)
+        command = player_actions.get_input(game_state, player_action)
 
         if command == 'new_room':
-           describe_current_room(game_state)
+           utils.describe_current_room(game_state)
            game_state['steps_taken'] += 1
-           random_event(game_state)
+           utils.random_event(game_state)
 
         if command == 'quit' or game_state['game_over']:
           print("Выход из игры.")

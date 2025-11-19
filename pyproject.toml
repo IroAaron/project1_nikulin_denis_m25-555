@@ -22,7 +22,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.ruff]
 line-length = 88
 target-version = "py311"
-exclude = ["venv", ".venv", "dist", "pycache", "constants.py"]
+exclude = ["venv", ".venv", "dist", "pycache"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]

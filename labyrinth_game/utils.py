@@ -1,7 +1,6 @@
-from .constants import ROOMS
-from .constants import BIG_RANDOM_NUMS
-
 import math
+
+from labyrinth_game.constants import BIG_RANDOM_NUMS, ROOMS
 
 def pseudo_random(seed, modulo):
     final_num = math.sin(seed * BIG_RANDOM_NUMS[0]) * BIG_RANDOM_NUMS[1]
@@ -11,7 +10,8 @@ def pseudo_random(seed, modulo):
 def random_event(game_state):
     seed = game_state['steps_taken']
     event_chance = pseudo_random(seed, 10)  
-    if event_chance > 0: return
+    if event_chance > 0: 
+        return
 
     event_type = pseudo_random(seed, 2)
     match event_type:
@@ -29,7 +29,10 @@ def random_event(game_state):
                     print("Чудище напало на вас. Вам не было чем отбиться")
                     lose_message(game_state)
         case 2:
-            if game_state['current_room'] == 'trap_room' and 'torch' not in game_state['player_inventory']:
+            current_room = game_state['current_room']
+            inventory = game_state['player_inventory']
+
+            if current_room == 'trap_room' and 'torch' not in inventory:
                 print("Вы не заметили ловушку!")
                 trigger_trap(game_state)
 
@@ -46,25 +49,30 @@ def describe_current_room(game_state):
                 print(", ", end='')
 
         print('')
-    if current_room_data['puzzle'] is not None: print("Кажется, здесь есть загадка")
+    if current_room_data['puzzle'] is not None: 
+        print("Кажется, здесь есть загадка")
 
 def change_room_desc_after_item_taken(room, item, game_state):
     match room:
         case 'entrance':
             if item == 'torch':
-                ROOMS[room]['description'] = 'Вы в темном входе лабиринта. Стены покрыты мхом.'
+                ROOMS[room]['description'] = 'Вы в темном входе лабиринта. ' \
+                'Стены покрыты мхом.'
         case 'library':
              if item == 'treasure_key':
-                ROOMS[room]['description'] = 'Пыльная библиотека. На полках старые свитки.'
+                ROOMS[room]['description'] = 'Пыльная библиотека. ' \
+                'На полках старые свитки.'
         case 'armory':
             if item == 'sword':
                 if 'bronze_box' in ROOMS[room]['items']:
-                    ROOMS[room]['description'] = 'Старая оружейная комната. Рядом с местом, где висел меч — небольшая бронзовая шкатулка.'
+                    ROOMS[room]['description'] = 'Старая оружейная комната. ' \
+                    'Рядом с местом, где висел меч — небольшая бронзовая шкатулка.'
                 else:
                     ROOMS[room]['description'] = 'Старая оружейная комната.'
             if item == 'bronze_box':
                 if 'sword' in ROOMS[room]['items']:
-                    ROOMS[room]['description'] = 'Старая оружейная комната. На стене висит меч.'
+                    ROOMS[room]['description'] = 'Старая оружейная комната. ' \
+                    'На стене висит меч.'
                 else:
                     ROOMS[room]['description'] = 'Старая оружейная комната.'
         case 'hidden_chamber':
@@ -137,7 +145,7 @@ def try_add_awards(game_state):
             match award:
                 case 'coins':
                     coins = current_room_data['puzzle']['awards']['coins']
-                    print(f"Вы нашли {coins} монет. Текущий счет: {game_state['coins']} монет")
+                    print(f"Найдено {coins} монет. В сумке: {game_state['coins']}")
                     add_coins(game_state, coins)
                 case 'items':
                     items = current_room_data['puzzle']['awards']['items']

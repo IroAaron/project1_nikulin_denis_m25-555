@@ -1,11 +1,5 @@
-from .constants import ROOMS
-from .constants import DIRECTIONS
-from .constants import COMMANDS
-
-from .utils import describe_current_room
-from .utils import solve_puzzle
-from .utils import attempt_open_treasure
-from .utils import change_room_desc_after_item_taken
+from labyrinth_game.constants import ROOMS, DIRECTIONS, COMMANDS
+from labyrinth_game import utils
 
 global_game_state = {}
 
@@ -16,7 +10,11 @@ def action_show_help(argue):
 
 def action_show_inventory(argue):
     inventory = global_game_state['player_inventory']
-    print(f"Ваши предметы: {inventory}") if len(inventory) > 0 else print("Инвентарь пуст")
+    
+    if len(inventory) > 0:
+        print(f"Ваши предметы: {inventory}")
+    else:
+        print("Инвентарь пуст")
 
 def action_move_player(direction):
     if direction is None:
@@ -59,7 +57,8 @@ def action_try_take_item(item):
     if item in available_items:
         action_take_item(item)
         available_items.remove(item)
-        change_room_desc_after_item_taken(global_game_state['current_room'], item, global_game_state)
+        current_room = global_game_state['current_room']
+        utils.change_room_desc_after_item_taken(current_room, item, global_game_state)
     else:
         print("Этого предмета в комнате нет")
 
@@ -83,14 +82,14 @@ def action_use_item(item):
             print("Без понятия, что с этим делать")
 
 def action_describe_room(argue):
-    describe_current_room(global_game_state)
+    utils.describe_current_room(global_game_state)
 
 def action_try_solve_puzzle(argue):
     if global_game_state['current_room'] == 'treasure_room':
-        attempt_open_treasure(global_game_state)
+        utils.attempt_open_treasure(global_game_state)
         return
     
-    solve_puzzle(global_game_state)
+    utils.solve_puzzle(global_game_state)
 
 def action_action_quit_game(argue):
     return 'quit'

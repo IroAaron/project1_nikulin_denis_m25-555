@@ -1,6 +1,5 @@
 #labyrinth_game/constants.py
 
-
 ROOMS = {
     'entrance': {
         'is_open' : True,
