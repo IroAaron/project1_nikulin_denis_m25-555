@@ -10,9 +10,14 @@ def action_show_help(argue):
 
 def action_show_inventory(argue):
     inventory = global_game_state['player_inventory']
-    
+
     if len(inventory) > 0:
-        print(f"Ваши предметы: {inventory}")
+        print("Ваши предметы: ", end='')
+        for i in range(0, len(inventory)):
+            print(f"{inventory[i]}", end='')
+            if i < len(inventory) - 1:
+                print(", ", end='')
+        print('')
     else:
         print("Инвентарь пуст")
 
@@ -31,6 +36,7 @@ def action_move_player(direction):
                     print(f"Вы использовали rusty_key и успешно открыли {next_room}")
                 else:
                     print("Кажется, дверь в комнату заперта. Нужен ключ, чтобы войти")
+                    print('')
                     return
             global_game_state['current_room'] = next_room
             return 'new_room'
@@ -67,6 +73,11 @@ def action_take_item(item):
     global_game_state['player_inventory'].append(item)
 
 def action_use_item(item):
+    inventory = global_game_state['player_inventory']
+    if item not in inventory:
+        print(f"У вас нет в инвентаре предмета '{item}'")
+        return
+
     match item:
         case 'torch':
             print("Стало светлее")
