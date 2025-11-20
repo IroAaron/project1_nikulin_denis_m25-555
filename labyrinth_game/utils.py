@@ -58,7 +58,7 @@ def describe_current_room(game_state):
     if current_room_data['puzzle'] is not None: 
         print("Кажется, здесь есть загадка")
 
-def change_room_desc_after_item_taken(room, item, game_state):
+def change_room_desc_after_item_taken(room, item):
     match room:
         case 'entrance':
             if item == 'torch':

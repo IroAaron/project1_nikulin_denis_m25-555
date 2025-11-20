@@ -64,7 +64,7 @@ def action_try_take_item(item):
         action_take_item(item)
         available_items.remove(item)
         current_room = global_game_state['current_room']
-        utils.change_room_desc_after_item_taken(current_room, item, global_game_state)
+        utils.change_room_desc_after_item_taken(current_room, item)
     else:
         print("Этого предмета в комнате нет")
 
